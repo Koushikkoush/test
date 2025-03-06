@@ -1,0 +1,39 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Left Side: Leads Count -->
+        <div class="col-md-6">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-body text-center">
+                    <h2 class="display-4">Total Leads: {{ leads|length }}</h2>
+                    <hr>
+                    <div class="row">
+                        <div class="col">
+                            <p class="lead">Contacted: <strong>{{ contacted_leads_count }}</strong></p>
+                        </div>
+                        <div class="col">
+                            <p class="lead">Won: <strong>{{ won_leads_count }}</strong></p>
+                        </div>
+                        <div class="col">
+                            <p class="lead">Lost: <strong>{{ lost_leads_count }}</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side: Clients Count -->
+        <div class="col-md-6">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-body text-center">
+                    <h2 class="display-4">Total Clients: {{ clients|length }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

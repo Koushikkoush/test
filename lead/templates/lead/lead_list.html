@@ -1,0 +1,100 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Leads{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col">
+            <h1>Leads</h1>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col d-flex justify-content-between align-items-center">
+            <a href="{% url 'leads:add' %}" class="btn btn-primary">Add lead</a>
+            
+            <div class="btn-group" role="group">
+                <a href="{% url 'leads:list' %}" class="btn btn-outline-secondary">All</a>
+                <!-- Add status filters if needed -->
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            {% if object_list %}
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Priority</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for lead in object_list %}
+                                <tr>
+                                    <td>
+                                        <a href="{% url 'leads:detail' lead.id %}">
+                                            {{ lead.client.name }}
+                                        </a>
+                                    </td>
+                                    <td>{{ lead.email }}</td>
+                                    <td>
+                                        <span class="badge 
+                                            {% if lead.status == 'new' %}
+                                                bg-info
+                                            {% elif lead.status == 'contacted' %}
+                                                bg-warning
+                                            {% elif lead.status == 'won' %}
+                                                bg-success
+                                            {% elif lead.status == 'lost' %}
+                                                bg-danger
+                                            {% else %}
+                                                bg-secondary
+                                            {% endif %}
+                                        ">
+                                            {{ lead.get_status_display }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge 
+                                            {% if lead.priority == 'low' %}
+                                                bg-secondary
+                                            {% elif lead.priority == 'medium' %}
+                                                bg-warning
+                                            {% elif lead.priority == 'high' %}
+                                                bg-danger
+                                            {% endif %}
+                                        ">
+                                            {{ lead.get_priority_display }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <a href="{% url 'leads:edit' lead.id %}" class="btn btn-outline-primary">Edit</a>
+                                            <a href="{% url 'leads:convert' lead.id %}" class="btn btn-outline-success" onclick="return confirm('Are you sure you want to convert this lead to a client?')">Convert</a>
+                                            <a href="{% url 'leads:delete' lead.id %}" class="btn btn-outline-danger" onclick="return confirm('Are you sure you want to delete this lead?')">Delete</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="card text-center p-5 bg-light">
+                    <div class="card-body">
+                        <h5 class="card-title">You don't have any leads yet</h5>
+                        <a href="{% url 'leads:add' %}" class="btn btn-primary mt-3">Add your first lead</a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
